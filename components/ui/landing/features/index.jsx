@@ -47,7 +47,7 @@ const Features = () => {
                 <h2 className='text-3xl md:text-5xl font-medium text-white tracking-tight mb-4'>
                     Built for modern
                     <br/>
-                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400'>support teams</span>
+                    <span className='text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-blue-400'>support teams</span>
                 </h2>
                 <p className='text-zinc-400 font-light max-w-xl mx-auto'>
                     Everything you need to deliver instant, intelligent customer support without hiring a large team.

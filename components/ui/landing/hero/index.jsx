@@ -16,7 +16,7 @@ const Hero = () => {
                 <h1 className='text-5xl md:text-7xl font-medium tracking-tight text-white mb-6 leading-[1.1]'>
                     Human friendly Support
                     <br />
-                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400'>AI Chatbot</span>
+                    <span className='text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-blue-400'>AI Chatbot</span>
                 </h1>
 
                 {/* Subheading */}
@@ -31,7 +31,7 @@ const Hero = () => {
                     </Link>
                     <button className='flex items-center gap-3 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors group'>
                         <div className='w-6 h-6 rounded-full bg-purple-500/20 border border-purple-400/30 flex items-center justify-center'>
-                            <div className='w-0 h-0 border-t-[4px] border-b-[4px] border-l-[6px] border-transparent border-l-purple-400 ml-0.5'></div>
+                            <div className='w-0 h-0 border-t-4 border-b-4 border-l-[6px] border-transparent border-l-purple-400 ml-0.5'></div>
                         </div>
                         <span className='text-sm text-zinc-400 group-hover:text-white transition-colors'>Watch Demo</span>
                     </button>
@@ -41,7 +41,7 @@ const Hero = () => {
             <div className='relative mt-16 max-w-md mx-auto'>
 
                 {/* Glow */}
-                <div className='absolute -inset-4 bg-gradient-to-r from-purple-600/10 to-blue-600/10 rounded-3xl blur-2xl'></div>
+                <div className='absolute -inset-4 bg-linear-to-r from-purple-600/10 to-blue-600/10 rounded-3xl blur-2xl'></div>
 
                 {/* Chat Window */}
                 <div className='relative rounded-2xl border border-white/10 bg-[#0d0d14] overflow-hidden animate-float'>
@@ -53,11 +53,11 @@ const Hero = () => {
                     </div>
 
                     {/* Messages Area */}
-                    <div className='p-5 space-y-4 min-h-[280px]'>
+                    <div className='p-5 space-y-4 min-h-70'>
 
                         {/* AI Message */}
                         <div className='flex items-start gap-3'>
-                            <div className='w-8 h-8 rounded-full bg-purple-500/30 border border-purple-400/20 flex items-center justify-center flex-shrink-0'>
+                            <div className='w-8 h-8 rounded-full bg-purple-500/30 border border-purple-400/20 flex items-center justify-center shrink-0'>
                                 <span className='text-xs text-purple-300'>AI</span>
                             </div>
                             <div className='bg-white/8 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[75%]'>
@@ -83,14 +83,14 @@ const Hero = () => {
                             <div className='bg-white/8 border border-white/10 rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[75%]'>
                                 <p className='text-sm text-zinc-300'>I need some information about ReplyAI</p>
                             </div>
-                            <div className='w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center flex-shrink-0'>
+                            <div className='w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center shrink-0'>
                                 <span className='text-xs text-zinc-300'>U</span>
                             </div>
                         </div>
 
                         {/* Typing Indicator */}
                         <div className='flex items-start gap-3'>
-                            <div className='w-8 h-8 rounded-full bg-purple-500/30 border border-purple-400/20 flex items-center justify-center flex-shrink-0'>
+                            <div className='w-8 h-8 rounded-full bg-purple-500/30 border border-purple-400/20 flex items-center justify-center shrink-0'>
                                 <span className='text-xs text-purple-300'>AI</span>
                             </div>
                             <div className='bg-white/8 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-3'>
@@ -109,7 +109,7 @@ const Hero = () => {
                         <div className='flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2'>
                             <p className='text-xs text-zinc-600'>Type a message...</p>
                         </div>
-                        <div className='w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center cursor-pointer hover:bg-purple-400 transition-colors flex-shrink-0'>
+                        <div className='w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center cursor-pointer hover:bg-purple-400 transition-colors shrink-0'>
                             <svg className='w-3.5 h-3.5 text-white rotate-90' fill='currentColor' viewBox='0 0 24 24'>
                                 <path d='M2 21l21-9L2 3v7l15 2-15 2v7z' />
                             </svg>

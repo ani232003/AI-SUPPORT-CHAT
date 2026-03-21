@@ -28,12 +28,20 @@ const Navbar = async () => {
             {/* Right Side Buttons */}
             <div className='flex items-center gap-3'>
                 {user ? (
-                    <Link 
-                        href="/dashboard" 
-                        className='text-sm bg-purple-600 text-white px-4 py-1.5 rounded-full font-medium hover:bg-purple-500 transition-colors animate-bounce'
-                    >
-                        Dashboard
-                    </Link>
+                    <div className='flex items-center gap-3'>
+                        <Link 
+                            href="/dashboard" 
+                            className='text-sm bg-purple-600 text-white px-4 py-1.5 rounded-full font-medium hover:bg-purple-500 transition-colors'
+                        >
+                            Dashboard
+                        </Link>
+                        <Link 
+                            href="/api/auth/logout" 
+                            className='text-sm text-zinc-400 hover:text-white transition-colors'
+                        >
+                            Logout
+                        </Link>
+                    </div>
                 ) : (
                     <>
                         <Link href="/api/auth" className='text-sm text-zinc-400 hover:text-white transition-colors'>
