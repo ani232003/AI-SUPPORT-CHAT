@@ -1,7 +1,7 @@
 'use client'
 
 import { useSearchParams } from 'next/navigation'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 
 const EmbedPage = () => {
   const searchParams = useSearchParams()
@@ -106,8 +106,6 @@ const EmbedPage = () => {
 
   return (
     <div style={{ display:'flex', flexDirection:'column', height:'100vh', background:'#09090b', color:'#f5f5f5', fontFamily:'"Inter", sans-serif', overflow:'hidden' }}>
-
-      {/* Header */}
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 16px', borderBottom:'1px solid rgba(255,255,255,0.06)', flexShrink:0 }}>
         <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
           <div style={{ width:'32px', height:'32px', borderRadius:'8px', background:`${accentColor}22`, border:`1px solid ${accentColor}44`, display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -135,7 +133,6 @@ const EmbedPage = () => {
         </button>
       </div>
 
-      {/* Messages */}
       <div style={{ flex:1, overflowY:'auto', padding:'16px', display:'flex', flexDirection:'column', gap:'12px' }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ display:'flex', alignItems:'flex-end', gap:'8px', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
@@ -177,7 +174,6 @@ const EmbedPage = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
       <div style={{ padding:'12px 16px', flexShrink:0 }}>
         <div style={{ display:'flex', alignItems:'center', gap:'8px', background:'#141414', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'12px', padding:'8px 8px 8px 14px' }}>
           <textarea
@@ -215,4 +211,15 @@ const EmbedPage = () => {
   )
 }
 
-export default EmbedPage
+const EmbedPageWrapper = () => (
+  <Suspense fallback={
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', background:'#09090b' }}>
+      <div style={{ width:'20px', height:'20px', borderRadius:'50%', border:'2px solid rgba(255,255,255,0.08)', borderTopColor:'#6366f1', animation:'spin 0.8s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  }>
+    <EmbedPage />
+  </Suspense>
+)
+
+export default EmbedPageWrapper
