@@ -53,7 +53,7 @@ export async function GET(req) {
         }), {
             httpOnly: true,
             secure: true,
-            sameSite: "lax",
+            sameSite: "none",
             path: "/",
             maxAge: 60 * 60 * 24 * 7,
         });
