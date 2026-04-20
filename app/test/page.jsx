@@ -10,7 +10,7 @@ const TestEmbedPage = () => {
 
 
       <Script
-        src={`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.js`}
+        src={`${process.env.NEXT_PUBLIC_APP_URL}/widget.js`}
         data-id={chatbotId}
         strategy="afterInteractive"
       />

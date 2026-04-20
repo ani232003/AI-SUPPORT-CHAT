@@ -5,8 +5,6 @@ import ChatSimulator from '@/components/ui/dashboard/chatbot/chatSimulator'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import ApperanceConfig from '@/components/ui/dashboard/chatbot/appearanceConfig'
 import EmbedCodeConfig from '@/components/ui/dashboard/chatbot/embedCodeConfig'
-import { ca } from 'date-fns/locale'
-import { set } from 'date-fns'
 
 const Page = () => {
   const [metadata, setMetadata] = useState(null)

@@ -18,7 +18,7 @@ export default async function DashboardLayout({ children }) {
 
     return (
         <div className='bg-[#050509] min-h-screen font-sans antialiased text-white'>
-            {session?.value ? (  // fix: wrap in parentheses, not a fragment
+            {session?.value ? ( 
                 <>
                     <Sidebar />
                     <div className='flex-1 flex flex-col md:ml-64 relative min-h-screen transition-all duration-300'>
