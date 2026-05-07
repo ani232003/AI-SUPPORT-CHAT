@@ -12,15 +12,20 @@ export async function POST(request) {
         let { messages: msgList, metadata: metadataBody, activeSection, widgetId, conversationId } = await request.json()
 
         let userEmail = null
-        const user = await isAuthorized()
-        if (user) {
-            userEmail = user.email
-        } else if (widgetId) {
+        // Disable session auth for embed, use widgetId lookup
+        if (widgetId) {
             const [biz] = await db.select().from(metadata).where(eq(metadata.id, widgetId)).limit(1)
             if (biz) userEmail = biz.user_email
+        } else {
+            const user = await isAuthorized()
+            if (user) {
+                userEmail = user.email
+            }
         }
 
-        if (!userEmail) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        if (!userEmail) {
+            return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Access-Control-Allow-Origin': '*' } });
+        }
 
         const metaData = metadataBody?.data || metadataBody
         const sources = await db.select().from(knowledge).where(eq(knowledge.user_email, userEmail))
@@ -83,13 +88,13 @@ Tone: ${activeSection.tone || 'neutral'}${activeSection.allowed_topics ? `\nYou 
                 { conversation_id: convId, role: 'assistant', content: reply },
             ])
 
-            return NextResponse.json({ success: true, message: reply, conversationId: convId }, { status: 200 })
+            return new Response(JSON.stringify({ success: true, message: reply, conversationId: convId }), { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } });
         }
 
-        return NextResponse.json({ success: true, message: reply }, { status: 200 })
+        return new Response(JSON.stringify({ success: true, message: reply }), { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } });
 
     } catch (error) {
         console.error('Chat error:', error.message)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } });
     }
 }

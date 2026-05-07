@@ -8,7 +8,7 @@ export async function GET(request) {
     const widgetId = searchParams.get('token');
 
     if (!widgetId) {
-        return NextResponse.json({ success: false, error: 'widgetId is required' }, { status: 400 });
+        return new Response(JSON.stringify({ success: false, error: 'widgetId is required' }), { status: 400, headers: { 'Access-Control-Allow-Origin': '*' } });
     }
 
     try {
@@ -17,7 +17,7 @@ export async function GET(request) {
             .limit(1);
 
         if (!botMeta) {
-            return NextResponse.json({ success: false, error: 'Widget not found' }, { status: 404 });
+            return new Response(JSON.stringify({ success: false, error: 'Widget not found' }), { status: 404, headers: { 'Access-Control-Allow-Origin': '*' } });
         }
 
         const [meta] = await db.select().from(chatBotMetaData)
@@ -28,15 +28,15 @@ export async function GET(request) {
             .from(sections)
             .where(eq(sections.createdBy, botMeta.user_email));
 
-        return NextResponse.json({
+        return new Response(JSON.stringify({
             success: true,
             config: meta || {},
             business: botMeta,
             sections: userSections
-        }, { status: 200 });
+        }), { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } });
 
     } catch (error) {
         console.error('Widget config error:', error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        return new Response(JSON.stringify({ success: false, error: error.message }), { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } });
     }
 }

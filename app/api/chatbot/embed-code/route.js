@@ -5,31 +5,25 @@ import { db } from "@/DB/client";
 import { metadata } from "@/DB/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { isAuthorized } from "@/lib/auth";
 
 export async function GET(req) {
     try {
-        const user = await isAuthorized();
-
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        // Remove auth dependency to make embed code fetch public
 
         // Get user's chatbot metadata
         const [chatbotData] = await db
             .select()
             .from(metadata)
-            .where(eq(metadata.user_email, user.email))
             .limit(1);
 
         if (!chatbotData) {
-            return NextResponse.json({ 
+            return new NextResponse(JSON.stringify({ 
                 error: 'No chatbot found. Please initialize your chatbot first.' 
-            }, { status: 404 });
+            }), { status: 404, headers: { 'Access-Control-Allow-Origin': '*' } });
         }
 
         const chatbotId = chatbotData.id;
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://ai-support-chat-seven.vercel.app/';
 
         // Generate embed code with the user's unique chatbot ID
         const embedCode = `<!-- AI Support Chat Widget -->
@@ -51,18 +45,18 @@ export async function GET(req) {
 </script>`;
 
         // Also generate a script tag version
-        const scriptTag = `<script src="${baseUrl}/chatbot-widget.js" data-chatbot-id="${chatbotId}" async></script>`;
+        const scriptTag = `<script src="${baseUrl}/widget.js" data-id="${chatbotId}" async></script>`;
 
-        return NextResponse.json({ 
+        return new NextResponse(JSON.stringify({ 
             success: true,
             chatbotId,
             embedCode,
             scriptTag,
             iframeUrl: `${baseUrl}/embed?token=${chatbotId}`
-        });
+        }), { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } });
 
     } catch (error) {
         console.error('Embed Code Error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return new NextResponse(JSON.stringify({ error: 'Internal Server Error' }), { status: 500, headers: { 'Access-Control-Allow-Origin': '*' } });
     }
 }
