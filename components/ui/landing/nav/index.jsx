@@ -41,10 +41,10 @@ const Navbar = async () => {
                     </div>
                 ) : (
                     <>
-                        <a href="/api/auth" className='text-sm text-zinc-400 hover:text-white transition-colors'>
+                        <a href="/api/auth/login" className='text-sm text-zinc-400 hover:text-white transition-colors'>
                             Login
                         </a>
-                        <a href="/api/auth" className='text-sm bg-white text-black px-4 py-1.5 rounded-full font-medium hover:bg-zinc-200 transition-colors'>
+                        <a href="/api/auth/login" className='text-sm bg-white text-black px-4 py-1.5 rounded-full font-medium hover:bg-zinc-200 transition-colors'>
                             Get Started
                         </a>
                     </>

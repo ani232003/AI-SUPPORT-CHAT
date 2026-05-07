@@ -1,97 +1,42 @@
-import { isAuthorized } from "@/lib/auth"
-import { NextResponse } from "next/server"
-import { db } from "@/DB/client" 
-import { eq } from "drizzle-orm" 
-import { metadata } from "@/DB/schema" 
+import { db } from '@/DB/client';
+import { metadata, chatBotMetaData } from '@/DB/schema';
+import { eq } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
+import { isAuthorized } from '@/lib/auth';
 
-// GET - Fetch existing metadata
-export async function GET() {
-    try {
-        const user = await isAuthorized()
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
-
-        const [existingMetadata] = await db.select().from(metadata).where(eq(metadata.user_email, user.email))
-
-        if (!existingMetadata) {
-            return NextResponse.json({ data: null }, { status: 200 })
-        }
-
-        return NextResponse.json(existingMetadata, { status: 200 })
-
-    } catch (error) {
-        console.error("Error:", error.message)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+export async function GET(req) {
+  try {
+    const user = await isAuthorized();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-}
 
-// POST - Create new metadata
-export async function POST(req) {
-    try {
-        const user = await isAuthorized()
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
+    // Fetch chatbot metadata by user's email
+    const [userMetadata] = await db.select().from(metadata).where(eq(metadata.user_email, user.email)).limit(1);
 
-        const body = await req.json()
-        const { business_name, website_url, color, welcome_message } = body
-
-        // Check if metadata already exists for this user
-        const [existingMetadata] = await db.select().from(metadata).where(eq(metadata.user_email, user.email))
-
-        if (existingMetadata) {
-            return NextResponse.json({ 
-                error: 'Metadata already exists for this user',
-                data: existingMetadata 
-            }, { status: 400 })
-        }
-
-        // Create new metadata
-        const result = await db.insert(metadata).values({
-            user_email: user.email,
-            business_name: business_name || 'My Business',
-            website_url: website_url || '',
-            color: color || '#6366f1',
-            welcome_message: welcome_message || 'Hello! How can I assist you today?'
-        }).returning()
-
-        return NextResponse.json(result[0], { status: 201 })
-
-    } catch (error) {
-        console.error("Error creating metadata:", error.message)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+    if (!userMetadata) {
+      // Return null or empty if no metadata found
+      return NextResponse.json(null, { status: 200 });
     }
-}
 
-// PUT - Update existing metadata
-export async function PUT(req) {
-    try {
-        const user = await isAuthorized()
-        if (!user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-        }
+    // Fetch chatbot meta appearance data
+    const [botMeta] = await db.select().from(chatBotMetaData).where(eq(chatBotMetaData.user_email, user.email)).limit(1);
 
-        const body = await req.json()
-        const { color, welcome_message } = body
+    // Compose response metadata including color and welcome_message
+    const responseMetadata = {
+      id: userMetadata.id,
+      user_email: userMetadata.user_email,
+      business_name: userMetadata.business_name,
+      website_url: userMetadata.website_url,
+      external_links: userMetadata.external_links,
+      color: botMeta?.color || '#6366f1',
+      welcome_message: botMeta?.welcome_message || 'Hello! How can I assist you today?',
+    };
 
-        // Update metadata
-        const result = await db.update(metadata)
-            .set({
-                color: color || '#6366f1',
-                welcome_message: welcome_message || 'Hello! How can I assist you today?'
-            })
-            .where(eq(metadata.user_email, user.email))
-            .returning()
+    return NextResponse.json(responseMetadata, { status: 200 });
 
-        if (result.length === 0) {
-            return NextResponse.json({ error: 'Metadata not found' }, { status: 404 })
-        }
-
-        return NextResponse.json(result[0], { status: 200 })
-
-    } catch (error) {
-        console.error("Error updating metadata:", error.message)
-        return NextResponse.json({ error: error.message }, { status: 500 })
-    }
+  } catch (error) {
+    console.error('Fetch Chatbot Metadata Error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }

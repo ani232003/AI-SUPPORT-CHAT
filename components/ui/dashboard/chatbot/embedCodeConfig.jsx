@@ -7,10 +7,10 @@ import { Code, Copy, Check, ExternalLink } from 'lucide-react'
 
 const EmbedCodeConfig = ({ chatbotId }) => {
     const [copied, setCopied] = React.useState(false)
-
+  console.log("CHATBOT ID:", chatbotId)
     const embedCode = `<script
   src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.js"
-  data-id="${chatbotId || 'YOUR_CHATBOT_ID'}"
+  data-id="${chatbotId ?? ''}"
   async>
 </script>`
 
@@ -19,6 +19,8 @@ const EmbedCodeConfig = ({ chatbotId }) => {
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
     }
+
+    
 
     return (
         <div className='space-y-4'>
